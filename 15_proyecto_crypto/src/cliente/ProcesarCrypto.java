@@ -14,7 +14,7 @@ public class ProcesarCrypto {
 
         var flujo = service.flujoCotizacion();
         ExecutorService executor=Executors.newCachedThreadPool();
-        executor.submit(()->
+        executor.submit(()->{
 	        // Consumidor 1: alertas de cambios en BTC
 	        flujo.filter(p -> p.getNombre().equals("bitcoin"))
 	             .buffer(2, 1)
@@ -30,9 +30,9 @@ public class ProcesarCrypto {
 	                 CryptoData ultimo = list.get(1);
 	                 System.out.printf("⚡ ALERTA BTC: %.2f USD (%s)%n",
 	                         ultimo.getValor(), ultimo.getFecha());
-	             },ex -> System.err.println("Error en consumidor BTC: " + ex)));
+	             },ex -> System.err.println("Error en consumidor BTC: " + ex));});
       
-        executor.submit(()->
+        executor.submit(()->{
 	        // Consumidor 2: comparación BTC vs ETH
 	        flujo
 	        .buffer(2, TimeUnit.SECONDS) // cada 2 segundos recojo lo último de ambos
@@ -51,8 +51,8 @@ public class ProcesarCrypto {
 	
 	            System.out.printf("📊 Comparación: BTC %.2f vs ETH %.2f -> %s más alto%n",
 	                    btc, eth, btc > eth ? "BTC" : "ETH");
-	        },ex -> System.err.println("Error en consumidor BTC: " + ex))
-	     )
+	        },ex -> System.err.println("Error en consumidor BTC: " + ex));}
+	     );
 
         Thread.sleep(600000); // mantener vivo
 
