@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import model.Dron;
 import service.CompositorDron;
 
@@ -42,7 +43,7 @@ public class MapaDrones extends JPanel {
 
         var control = new CompositorDron();
         control.flujoGlobal()
-        		//***hilo de computación
+        		.observeOn(Schedulers.computation())
                 .subscribe(dato -> SwingUtilities.invokeLater(() -> mapa.actualizar(dato)));
     }
 }
