@@ -3,23 +3,24 @@ package com.rx.client;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.scheduler.Schedulers;
+
 public class ProcesarDatos {
-	private static String URL="http://localhost:8001/";
+	private static String URL="http://localhost:8002/";
 	public static void main(String[] args) throws InterruptedException {
 		WebClient webClient=WebClient.create(URL);
 		webClient
 		.get()
-		.uri("nombres")
+		.uri("sensor")
 		.accept(MediaType.TEXT_EVENT_STREAM)
 		.retrieve()
 		.bodyToFlux(String.class) //Flux<String>
-
-		.subscribe(s->System.out.println(s));
-		for(int i=1;i<=100;i++) {
-			Thread.sleep(50);
-			System.out.println("Otras tareas");
-		}
-		Thread.sleep(5000);
+		.map(s->Double.parseDouble(s))
+		.filter(n->n>37||n<10)
+		.publishOn(Schedulers.parallel())
+		.subscribe(s->System.out.println("Alerta de temperatura!!!: "+s));
+		
+		Thread.sleep(10000);
 	}
 
 }
