@@ -41,14 +41,13 @@ public class ProductosServiceImpl implements ProductosService {
 
 	@Override
 	public Mono<Producto> altaProducto(Producto producto) {
-		return buscarProducto(producto.getCodProducto()) // Mono<Producto>
-				.flatMap(p -> Mono.<Producto>empty()) // si existe → Mono vacío
-	            .switchIfEmpty(
-	                Mono.fromSupplier(() -> {
-	                    productos.add(producto);
-	                    return producto;
-	                })
-	            );	
+		return buscarProducto(producto.getCodProducto())
+	            .hasElement()
+	            .filter(existe -> !existe) // solo deja pasar si NO existe
+	            .flatMap(x -> Mono.fromSupplier(() -> {
+	                productos.add(producto);
+	                return producto;
+	            }));
 	}
 
 	@Override
