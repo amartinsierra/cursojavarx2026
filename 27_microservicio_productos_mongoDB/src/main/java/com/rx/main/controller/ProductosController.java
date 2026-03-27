@@ -24,16 +24,16 @@ public class ProductosController {
 	public ProductosController(ProductosService productosService) {
 		this.productosService = productosService;
 	}
-	@GetMapping(value="productos")
+	@GetMapping(value="productos",produces=MediaType.APPLICATION_NDJSON_VALUE)
 	public ResponseEntity<Flux<Producto>> productos(){
 		return new ResponseEntity<>(productosService.catalogo(),HttpStatus.OK);
 	}
-	@GetMapping(value="productos/por-categoria")
+	@GetMapping(value="productos/por-categoria",produces=MediaType.APPLICATION_NDJSON_VALUE)
 	public ResponseEntity<Flux<Producto>> productosCategoria(@RequestParam String categoria){
 		return new ResponseEntity<>(productosService.productosCategoria(categoria),HttpStatus.OK);
 	}
 	
-	@GetMapping(value="productos/{cod}")
+	@GetMapping(value="productos/{cod}",produces=MediaType.APPLICATION_NDJSON_VALUE)
 	public ResponseEntity<Mono<Producto>> productoCodigo(@PathVariable String cod) {
 		return new ResponseEntity<>(productosService.productoCodigo(cod),HttpStatus.OK);
 	}
@@ -42,7 +42,7 @@ public class ProductosController {
 		
 		return new ResponseEntity<>(productosService.altaProducto(producto),HttpStatus.OK);
 	}
-	@DeleteMapping(value="productos")
+	@DeleteMapping(value="productos",produces=MediaType.APPLICATION_NDJSON_VALUE)
 	public Mono<ResponseEntity<Producto>> eliminarProducto(@RequestParam("cod") String cod) {
 		return productosService.eliminarProducto(cod)//Mono<Producto>
 				.map(p->new ResponseEntity<>(p,HttpStatus.OK))//Mono<ResponseEntity<Producto>>
