@@ -51,7 +51,7 @@ public class ProductosServiceImpl implements ProductosService {
 	//si el código de producto existe, no se da de alta y se devuelve mono empty
 	@Override
 	public Mono<Producto> altaProducto(Producto producto) {
-		return buscarProducto(producto.getCodProducto()) // Mono<Producto>
+		/*return buscarProducto(producto.getCodProducto()) // Mono<Producto>
 				.flatMap(p -> Mono.<Producto>empty())
 				.switchIfEmpty(
 				    Mono.fromSupplier(() -> {
@@ -59,7 +59,15 @@ public class ProductosServiceImpl implements ProductosService {
 				        template.send(topico, producto);
 				        return producto;
 				    })
-				);
+				);*/
+		return buscarProducto(producto.getCodProducto())
+	            .hasElement()
+	            .filter(existe -> !existe) // solo deja pasar si NO existe
+	            .flatMap(x -> Mono.fromSupplier(() -> {
+	                productos.add(producto);
+	                template.send(topico, producto);
+	                return producto;
+	            }));
 					
 	}
 
