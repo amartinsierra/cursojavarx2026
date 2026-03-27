@@ -11,6 +11,7 @@ import service.ConsultaProductosService;
 
 public class MostrarProductos {
 	static KafkaProducer<String, String> producer;
+	static String topico="productosTopic";	
 	static {
 		Properties props = new Properties();
 		props.put("bootstrap.servers", "localhost:9092");
@@ -33,7 +34,7 @@ public class MostrarProductos {
 
 	}
 	private static void enviarInfo(String cadena) {
-		String topico="productosTopic";	
+		System.out.println(cadena);
 		ProducerRecord<String,String> record=new ProducerRecord<>(topico, cadena);
 		//envio
 		producer.send(record);

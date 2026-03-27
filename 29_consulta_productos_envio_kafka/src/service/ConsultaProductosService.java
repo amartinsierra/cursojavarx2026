@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.core.Observable;
 import model.Item;
 
 public class ConsultaProductosService {
-	private final String url="http://localhost:10000/tienda";
+	private final String url="http://localhost:8004/tienda";
 	public Observable<Item> productosStock(int stock){
 		//completar
 		ObjectMapper mapper = new ObjectMapper();

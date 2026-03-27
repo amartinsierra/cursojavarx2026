@@ -23,7 +23,7 @@ public class MostrarMensajes {
 		consumer.subscribe(List.of(topico));
 		while(true) {
 			ConsumerRecords<String, String> records=consumer.poll(Duration.ofMillis(100));
-			records.forEach(r->System.out.println(r.value()));
+			records.forEach(r->System.out.println("Datos recibidos del tópico: "+r.value()));
 		}
 
 	}
