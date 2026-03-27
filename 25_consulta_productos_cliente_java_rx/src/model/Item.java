@@ -2,7 +2,7 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true) //para ignorar propiedades de la respuesta
 public class Item {
 	private String nombre;
 	private double precioUnitario;
